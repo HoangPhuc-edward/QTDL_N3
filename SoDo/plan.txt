@@ -1,0 +1,15 @@
+Thống nhất sơ đồ CDM
+- Check đủ đối tượng
+- Đối tượng có hợp lý không
+
+Thiết kế sơ đồ chức năng (Use case + Flow chart)
++ Đăng ký/ đăng nhập 
++ Thêm/ sửa/ xóa table
++ Xuất file excel
+
+Xác định trigger và các thứ khác
+Trigger bắt nguồn từ ràng buộc trong bảng
+Function và procedure là các chức năng mong muốn trong bảng
+
+
+
