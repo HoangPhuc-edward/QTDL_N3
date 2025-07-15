@@ -13,3 +13,130 @@ Function và procedure là các chức năng mong muốn trong bảng
 
 
 
+Ngôn ngữ: JS
+
+PHIM(MaPhim, TenPhim, TheLoai, DaoDien, ThoiLuong, NgayKhoiChieu, DoTuoi)
+// int, string, varchar(100), string, int, date, int
+PHONG_CHIEU(MaPhong, TenPhong, SoGhe, LoaiPhong)
+// int, string, int, string
+SUAT_CHIEU(MaSC, MaPhim, MaPhong, NgayChieu, GioChieu, GiaNguoiLon, GiaTreEm)
+// int, int, int, date, time, int, int
+GHE(MaGhe, MaPhong, SoHang, SoGhe, LoaiGhe)
+// int, int, int, int, varchar(100)
+KHACH_HANG(MaKH, TenKH, SDT, Email)
+// int, string, string, string
+VE(MaVe, MaSC, MaKH, MaGhe, NgayDat, GiaVe, TrangThai)
+// int, int, int, int, Date, int, string
+BAP_NUOC(MaCombo, TenCombo, GiaCombo, MoTa)
+// int, string, int, string
+HOA_DON(MaHD, MaKH, MaCombo, SoLuongCombo, NgayMua, TongTien)
+// int, int, int, int, date, int
+
+Stored Procedure
+- Danh sách suất chiếu của một bộ phim trong ngày
+- Hiển thị lịch sử vé đã đặt theo khách hàng.
+
+Function
+- Kiểm tra ghế còn trống trong suất chiếu
+- Doanh thu một bộ phim theo vé
+
+Trigger
+- Kiểm tra thời gian đặt vé
+- Tự động tính tổng tiền hóa đơn khi mua combo
+ 
+--------------------------------------------------------
+ 1.
+* Đăng nhập:
+- Nhập SDT, mật khẩu 
+- Kiểm tra định dạng
+- Kiểm tra tài khoản khớp thì trả về đúng (function 1)
+
+* Đăng ký:
+- Nhập SDT + Họ tên + 2 lần mật khẩu 
+- Kiểm tra định dạng
+- Kiểm tra trùng (function 1)
+- Kiểm tra 2 mk
+- Mã hóa, lưu
+
+
+2. 
+* Chức năng về phòng
+** Hiển thị toàn bộ phòng
+** Thêm sửa xóa các thứ
+
+*** Chức năng ghế:
+* Hiển thị ghế trống (sau khi chọn phòng) (procedure)
+* Thêm ghế (tự động lúc thêm phòng) 
+* Sửa, xóa ghế
+
+3.
+*** Các chức năng về phim và suất chiếu:
+** Hiển thị toàn bộ phim 
+
+** Hiển thị theo ngày 
+- Xài procedure hiển thị theo ngày
+- Xử lý thông tin + hiển thị 
+
+** Thêm phim và suất chiếu
+- Nhập vào các thông tin phim
+- Thêm phim  -> Lấy mã phim
+- Thêm lần lượt các suất chiếu
+
+** Sửa phim
+- Chức năng con: sửa suất chiếu
+
+** Xóa phim 
+- cái ta thấy: bấm nút xóa phim
+- cái mình làm
+- Xài 1 procedure: Xóa hết suất chiếu, Xóa phim
+
+** Tìm kiếm phim
+- Theo tên, thể loại, đạo diễn... (1 procedure)
+
+*** Chức năng về suất chiếu:
+* Hiển thị suất chiếu (sau khi chọn phim):
+* Hiển thị suất chiếu còn chỗ trống (sau khi chọn phim): (procedure)
+
+* Tìm kiếm suất chiếu:
+- Tìm theo thời gian (sau một mốc thời gian nào đó) (procedure)
+
+
+4. 
+*** Chức năng vé:
+* Hiển thị vé
+* Thêm vé:
+- Thêm khách hàng (nếu kh không chịu thì gán MaKH = 0)
+- Lấy ngày đặt hiện tại 
+- Lấy giá vé theo người lớn hoặc trẻ con
+- Cập trạng thái đã đặt (trigger)
+
+* Sửa vé:
+- Sửa thông tin (sửa ghế, sửa suất)
+
+* Xóa vé: bản chất là cập nhật trạng thái thành đã hủy
+
+*** Chức năng bắp nước
+* Hiển thị, thêm, sửa, xóa
+* Chọn bắp nước
+
+
+*** Chức năng hóa đơn
+* Thêm hóa đơn:
+- Thêm khách hàng, combo, số lượng
+- Lấy ngày mua hiện tại
+- Tính tổng tiền (trigger)
+
+* Hiển thị hóa đơn
+* Xuất danh sách hóa đơn 
+
+
+
+
+
+
+
+
+
+
+
+
