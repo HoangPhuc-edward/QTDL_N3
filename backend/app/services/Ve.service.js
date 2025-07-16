@@ -45,6 +45,21 @@ class Service {
       ]);
       const newMaKH = khachHangResult.insertId;
 
+      const [[gheResult]] = await pool.query(`SELECT MaPhong FROM GHE WHERE MaGhePhong = ?`, [MaGhePhong]);
+      if (!gheResult) {
+        throw new Error(`❌ Không tìm thấy ghế với mã ${MaGhePhong}`);
+      }
+      const maPhong = gheResult.MaPhong;
+
+      const [[phongResult]] = await pool.query(`SELECT TrangThai FROM PHONG_CHIEU WHERE MaPhong = ?`, [maPhong]);
+      if (!phongResult) {
+        throw new Error(`❌ Không tìm thấy phòng chiếu với mã ${maPhong}`);
+      }
+
+      if (phongResult.TrangThai === 0) {
+        throw new Error(`🚫 Phòng ${maPhong} hiện không hoạt động, không thể đặt vé.`);
+      }
+
       //  Thêm vé
       const [veResult] = await pool.query(
         `INSERT INTO VE (MaSC, MaKH, MaGhePhong, NgayDat, GiaVe)
