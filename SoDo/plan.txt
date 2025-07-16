@@ -77,6 +77,11 @@ Trigger
 - Xài procedure hiển thị theo ngày
 - Xử lý thông tin + hiển thị 
 
+- Select phim
+- Lấy ngày hiện tại bằng curdate
+- So sánh ngày khởi chiếu < ngày hiện tại < ngày kết thúc
+- lấy phim ra
+
 ** Thêm phim và suất chiếu
 - Nhập vào các thông tin phim
 - Thêm phim  -> Lấy mã phim
@@ -97,9 +102,13 @@ Trigger
 * Hiển thị suất chiếu (sau khi chọn phim):
 * Hiển thị suất chiếu còn chỗ trống (sau khi chọn phim): (procedure)
 
-* Tìm kiếm suất chiếu:
-- Tìm theo thời gian (sau một mốc thời gian nào đó) (procedure)
+- Lấy Suất chiếu, lấy ds phòng
+- Lấy số phòng trống = số phòng có danh sách ghế trống > 0
+- Nếu số phòng trống > 0 => trả về
 
+* Tìm kiếm suất chiếu:
+- Function trừ thời gian
+- Tìm theo thời gian (sau 15p) (procedure)
 
 4. 
 *** Chức năng vé:
@@ -109,6 +118,7 @@ Trigger
 - Lấy ngày đặt hiện tại 
 - Lấy giá vé theo người lớn hoặc trẻ con . chọn ở front end
 - Cập trạng thái đã đặt (trigger) 
+- Nếu quá 15 phút từ thời gian chiếu của suất thì không cho đặt
 
 * Sửa vé:
 - Sửa thông tin (sửa ghế, sửa suất) 
