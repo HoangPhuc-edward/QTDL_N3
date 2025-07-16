@@ -1,3 +1,7 @@
+DROP DATABASE qlphim;
+
+create database qlphim;
+
 use qlphim;
 
 -- Thoi luong tinh theo phut
@@ -16,7 +20,8 @@ CREATE TABLE PHONG_CHIEU (
     MaPhong INT AUTO_INCREMENT PRIMARY KEY,
     TenPhong VARCHAR(100),
     SoGhe INT,
-    LoaiPhong VARCHAR(100)
+    LoaiPhong VARCHAR(100),
+    TrangThai INT NOT NULL DEFAULT 1
 );
 
 CREATE TABLE SUAT_CHIEU (
@@ -38,6 +43,7 @@ CREATE TABLE GHE (
     SoHang INT,
     SoGhe INT,
     LoaiGhe VARCHAR(100),
+    TrangThai INT NOT NULL DEFAULT 1,
     FOREIGN KEY (MaPhong) REFERENCES PHONG_CHIEU(MaPhong)
 );
 
