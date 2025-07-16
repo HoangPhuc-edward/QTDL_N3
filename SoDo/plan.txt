@@ -107,24 +107,25 @@ Trigger
 * Thêm vé:
 - Thêm khách hàng (nếu kh không chịu thì gán MaKH = 0)
 - Lấy ngày đặt hiện tại 
-- Lấy giá vé theo người lớn hoặc trẻ con
-- Cập trạng thái đã đặt (trigger)
+- Lấy giá vé theo người lớn hoặc trẻ con . chọn ở front end
+- Cập trạng thái đã đặt (trigger) 
 
 * Sửa vé:
-- Sửa thông tin (sửa ghế, sửa suất)
-
+- Sửa thông tin (sửa ghế, sửa suất) 
+- xóa r làm vé mới
 * Xóa vé: bản chất là cập nhật trạng thái thành đã hủy
 
 *** Chức năng bắp nước
 * Hiển thị, thêm, sửa, xóa
-* Chọn bắp nước
+* Chọn bắp nước truoc khi them hoa don
 
 
+chưa có mã vé cho hóa đơn
 *** Chức năng hóa đơn
 * Thêm hóa đơn:
 - Thêm khách hàng, combo, số lượng
 - Lấy ngày mua hiện tại
-- Tính tổng tiền (trigger)
+- Tính tổng tiền (trigger) hóa đơn cho combo thôi còn bản chất cái vé là hóa đơn cho vé r 
 
 * Hiển thị hóa đơn
 * Xuất danh sách hóa đơn 

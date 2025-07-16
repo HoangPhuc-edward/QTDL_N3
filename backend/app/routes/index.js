@@ -1,11 +1,12 @@
-const express = require("express");
-const tempRoutes = require("./temp.route.js");
-// const userRoutes = require('./user.route'); // bạn có thể thêm sau
+// const express = require("express");
+// const router = express.Router();
 
-const router = express.Router();
+// const VeRoutes = require("./Ve.route");
+// const BapNuocRoutes = require("./Bap.route");
+// const HoaDonRoutes = require("./HoaDon.route");
 
-// Gắn từng route vào đường dẫn cụ thể
-router.use("/temps", tempRoutes);
-// router.use('/users', userRoutes); // ví dụ khác
+// router.use("/ve", VeRoutes);
+// router.use("/bap-nuoc", BapNuocRoutes);
+// router.use("/hoa-don", HoaDonRoutes);
 
-module.exports = router;
+// module.exports = router;
