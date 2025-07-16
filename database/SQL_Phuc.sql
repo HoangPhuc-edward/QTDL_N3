@@ -12,7 +12,9 @@ CREATE TABLE PHIM (
     DaoDien VARCHAR(255),
     ThoiLuong INT,
     NgayKhoiChieu DATE,
-    DoTuoi INT
+    NgayKetThuc DATE,
+    DoTuoi INT,
+    TrangThai INT NOT NULL DEFAULT 1
 );
 
 -- Loai phong co 2D, 3D, IMAX
@@ -32,6 +34,7 @@ CREATE TABLE SUAT_CHIEU (
     GioChieu TIME,
     GiaNguoiLon INT,
     GiaTreEm INT,
+    TrangThai INT NOT NULL DEFAULT 1,
     FOREIGN KEY (MaPhim) REFERENCES PHIM(MaPhim),
     FOREIGN KEY (MaPhong) REFERENCES PHONG_CHIEU(MaPhong)
 );

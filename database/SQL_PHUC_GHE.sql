@@ -65,5 +65,3 @@ END$$
 DELIMITER ;
 
 
-
-
