@@ -17,6 +17,21 @@ class Service {
     try {
       const currentDate = new Date().toISOString().slice(0, 10);
 
+      // Kiểm tra thời gian còn đủ để đặt vé hay không
+      const [[suatChieu]] = await pool.query(`SELECT NgayChieu, GioChieu FROM SUAT_CHIEU WHERE MaSC = ?`, [MaSC]);
+
+      if (!suatChieu) {
+        throw new Error(`Không tìm thấy suất chiếu với mã ${MaSC}`);
+      }
+
+      const gioChieuFull = new Date(`${suatChieu.NgayChieu}T${suatChieu.GioChieu}`);
+      const gioHienTai = new Date();
+      const diffMinutes = (gioChieuFull - gioHienTai) / (1000 * 60);
+
+      if (diffMinutes < 15) {
+        throw new Error("Chỉ được đặt vé trước giờ chiếu ít nhất 15 phút.");
+      }
+
       // Nếu không đủ thông tin → tạo ngẫu nhiên
       const isRandom = !TenKH || !SDT || !Email;
       let khachHang = {
@@ -32,12 +47,12 @@ class Service {
           SDT: SDT || `09${getRandomInt(10000000, 99999999)}`,
           Email: Email || `kh_${randomNumber}@mail.com`,
         };
-        console.log("🔄 Tạo khách hàng ngẫu nhiên:", khachHang);
+        console.log(" Tạo khách hàng ngẫu nhiên:", khachHang);
       } else {
-        console.log("📥 Dùng thông tin khách hàng từ client:", khachHang);
+        console.log(" Dùng thông tin khách hàng từ client:", khachHang);
       }
 
-      //  Thêm khách hàng
+      // Thêm khách hàng
       const [khachHangResult] = await pool.query(`INSERT INTO KHACH_HANG (TenKH, SDT, Email) VALUES (?, ?, ?)`, [
         khachHang.TenKH,
         khachHang.SDT,
@@ -45,22 +60,24 @@ class Service {
       ]);
       const newMaKH = khachHangResult.insertId;
 
+      // Kiểm tra ghế và phòng
       const [[gheResult]] = await pool.query(`SELECT MaPhong FROM GHE WHERE MaGhePhong = ?`, [MaGhePhong]);
       if (!gheResult) {
-        throw new Error(`❌ Không tìm thấy ghế với mã ${MaGhePhong}`);
+        throw new Error(`Không tìm thấy ghế với mã ${MaGhePhong}`);
       }
+
       const maPhong = gheResult.MaPhong;
 
       const [[phongResult]] = await pool.query(`SELECT TrangThai FROM PHONG_CHIEU WHERE MaPhong = ?`, [maPhong]);
       if (!phongResult) {
-        throw new Error(`❌ Không tìm thấy phòng chiếu với mã ${maPhong}`);
+        throw new Error(`Không tìm thấy phòng chiếu với mã ${maPhong}`);
       }
 
       if (phongResult.TrangThai === 0) {
-        throw new Error(`🚫 Phòng ${maPhong} hiện không hoạt động, không thể đặt vé.`);
+        throw new Error(`Phòng ${maPhong} hiện không hoạt động, không thể đặt vé.`);
       }
 
-      //  Thêm vé
+      // Thêm vé
       const [veResult] = await pool.query(
         `INSERT INTO VE (MaSC, MaKH, MaGhePhong, NgayDat, GiaVe)
          VALUES (?, ?, ?, ?, ?)`,

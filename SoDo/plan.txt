@@ -94,17 +94,22 @@ Trigger
 - cái ta thấy: bấm nút xóa phim
 - cái mình làm
 - Xài 1 procedure: Xóa hết suất chiếu, Xóa phim
+-> cap nhat trang thai = 0
 
 ** Tìm kiếm phim
 - Theo tên, thể loại, đạo diễn... (1 procedure)
 
 *** Chức năng về suất chiếu:
 * Hiển thị suất chiếu (sau khi chọn phim):
+
+
 * Hiển thị suất chiếu còn chỗ trống (sau khi chọn phim): (procedure)
+
 
 - Lấy Suất chiếu, lấy ds phòng
 - Lấy số phòng trống = số phòng có danh sách ghế trống > 0
 - Nếu số phòng trống > 0 => trả về
+
 
 * Tìm kiếm suất chiếu:
 - Function trừ thời gian

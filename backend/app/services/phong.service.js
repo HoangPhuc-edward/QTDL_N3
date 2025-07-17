@@ -13,17 +13,11 @@ class PhongService {
 
   static async getByAttribute(attribute, value) {
     try {
-      const [rows] = await pool.query(
-        `SELECT * FROM PHONG_CHIEU WHERE ${attribute} = ?`,
-        [value]
-      );
+      const [rows] = await pool.query(`SELECT * FROM PHONG_CHIEU WHERE ${attribute} = ?`, [value]);
       if (rows.length === 0) {
         throw new Error("Phong not found");
       }
-      return rows.map(
-        (row) =>
-          new Phong(row.TenPhong, row.SoGhe, row.LoaiPhong, row.TrangThai)
-      );
+      return rows.map((row) => new Phong(row.TenPhong, row.SoGhe, row.LoaiPhong, row.TrangThai));
     } catch (err) {
       throw err;
     }
@@ -31,10 +25,7 @@ class PhongService {
 
   static async taoGheTuDong(maPhong, soCotToiDa) {
     try {
-      const [result] = await pool.query(`CALL sp_them_ghe_tu_dong(?, ?)`, [
-        maPhong,
-        soCotToiDa,
-      ]);
+      const [result] = await pool.query(`CALL sp_them_ghe_tu_dong(?, ?)`, [maPhong, soCotToiDa]);
       return {
         success: true,
         message: "Them ghe tu dong thanh cong",
@@ -46,10 +37,7 @@ class PhongService {
 
   static async getById(maPhong) {
     try {
-      const [rows] = await pool.query(
-        "SELECT * FROM PHONG_CHIEU WHERE MaPhong = ?",
-        [maPhong]
-      );
+      const [rows] = await pool.query("SELECT * FROM PHONG_CHIEU WHERE MaPhong = ?", [maPhong]);
       if (rows.length === 0) {
         throw new Error("Phong not found");
       }
@@ -65,10 +53,11 @@ class PhongService {
 
   static async create(phong) {
     try {
-      const [result] = await pool.query(
-        "INSERT INTO PHONG_CHIEU (TenPhong, SoGhe, LoaiPhong) VALUES (?, ?, ?)",
-        [phong.tenPhong, phong.soGhe, phong.LoaiPhong]
-      );
+      const [result] = await pool.query("INSERT INTO PHONG_CHIEU (TenPhong, SoGhe, LoaiPhong) VALUES (?, ?, ?)", [
+        phong.tenPhong,
+        phong.soGhe,
+        phong.LoaiPhong,
+      ]);
       return {
         success: true,
         message: "Phong created successfully",
@@ -96,10 +85,7 @@ class PhongService {
 
   static async delete(maPhong) {
     try {
-      const [result] = await pool.query(
-        "UPDATE PHONG_CHIEU SET TrangThai = 0 WHERE MaPhong = ?",
-        [maPhong]
-      );
+      const [result] = await pool.query("UPDATE PHONG_CHIEU SET TrangThai = 0 WHERE MaPhong = ?", [maPhong]);
       if (result.affectedRows === 0) {
         throw new Error("Phong not found");
       }
