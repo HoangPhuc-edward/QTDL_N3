@@ -154,5 +154,32 @@ chưa có mã vé cho hóa đơn
 
 
 
+** Chia trang
+
+*Trang đăng ký / đăng Nhập
+
+*Trang chủ  / dashboard
+
+*Trang hiển thị danh sách phim - thêm / sửa / xóa / chi tiết
+
+*Trang suất chiếu 1 ( theo ngày)
+
+*Trang suất chiếu 2 ( nằm cùng phim )
+
+*Trang thêm sửa xóa phòng
+*Trang chọn ghế
+
+*Trang đặt vé ( phim -> suất chiếu -> ghế -> combo | khách hàng có nhập thông tin không)
+
+*Tang hiển thị vé
+*Trang hóa đơn | xuất hóa đơn
+
+
+
+
+
+
+
+
 
 
