@@ -1,4 +1,4 @@
-const GheService = require("../services/ghe.service");
+const GheService = require("../services/Ghe.service");
 const { Ghe } = require("../models/ghe.model");
 class GheController {
   static async getAllGheByMaPhong(req, res) {
@@ -27,21 +27,13 @@ class GheController {
       const gheTrong = await GheService.layGheTrong(maPhong);
       res.status(200).json(gheTrong);
     } catch (error) {
-      res
-        .status(500)
-        .json({ message: "Error retrieving available GHEs", error });
+      res.status(500).json({ message: "Error retrieving available GHEs", error });
     }
   }
 
   static async createGhe(req, res) {
     try {
-      const ghe = new Ghe(
-        req.body.maPhong,
-        req.body.soHang,
-        req.body.soGhe,
-        req.body.loaiGhe,
-        req.body.trangThai
-      );
+      const ghe = new Ghe(req.body.maPhong, req.body.soHang, req.body.soGhe, req.body.loaiGhe, req.body.trangThai);
       const result = await GheService.createGhe(ghe);
       res.status(201).json(result);
     } catch (error) {
@@ -52,13 +44,7 @@ class GheController {
   static async updateGhe(req, res) {
     try {
       const { maGhePhong } = req.params;
-      const ghe = new Ghe(
-        req.body.maPhong,
-        req.body.soHang,
-        req.body.soGhe,
-        req.body.loaiGhe,
-        req.body.trangThai
-      );
+      const ghe = new Ghe(req.body.maPhong, req.body.soHang, req.body.soGhe, req.body.loaiGhe, req.body.trangThai);
       const result = await GheService.updateGhe(maGhePhong, ghe);
       res.status(200).json(result);
     } catch (error) {

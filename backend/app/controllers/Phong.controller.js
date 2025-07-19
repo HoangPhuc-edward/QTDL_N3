@@ -1,4 +1,4 @@
-const PhongService = require("../services/phong.service");
+const PhongService = require("../services/Phong.service");
 
 class PhongController {
   static async getAll(req, res) {

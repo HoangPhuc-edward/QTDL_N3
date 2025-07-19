@@ -1,12 +1,12 @@
 const express = require("express");
-const nhanVienRoutes = require("./dsnhanvien.route.js");
-const phongRoutes = require("./dsphong.route.js");
-const gheRoutes = require("./dsdsghe.route.js");
+const nhanVienRoutes = require("./NhanVien.route.js");
+const phongRoutes = require("./Phong.route.js");
+const gheRoutes = require("./Ghe.route.js");
 
 const VeRoutes = require("./Ve.route");
 const BapNuocRoutes = require("./Bap.route");
 const HoaDonRoutes = require("./HoaDon.route");
-const PhimRoutes = require("./dsphim.route.js");
+const PhimRoutes = require("./Phim.route.js");
 const SuatChieuRoutes = require("./SuatChieu.route");
 
 const router = express.Router();

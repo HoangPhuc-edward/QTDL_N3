@@ -1,4 +1,4 @@
-const PhongController = require("../controllers/sphong.controller");
+const PhongController = require("../controllers/Phong.controller");
 
 const express = require("express");
 const router = express.Router();

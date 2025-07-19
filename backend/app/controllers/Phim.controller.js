@@ -1,4 +1,4 @@
-const PhimService = require("../services/phim.service");
+const PhimService = require("../services/Phim.service");
 const moment = require("moment");
 
 class PhimController {

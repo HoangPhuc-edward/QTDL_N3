@@ -1,4 +1,4 @@
-const NhanVienService = require("../services/nhanvien.service");
+const NhanVienService = require("../services/NhanVien.service");
 const NhanVien = require("../models/nhanvien.model");
 
 class NhanVienController {
@@ -6,22 +6,11 @@ class NhanVienController {
     try {
       const nhanVienData = req.body;
 
-      if (
-        !nhanVienData ||
-        !nhanVienData.hoTenNV ||
-        !nhanVienData.sdt ||
-        !nhanVienData.matKhau
-      ) {
-        return res
-          .status(400)
-          .json({ error: "Thông tin đăng ký không đầy đủ" });
+      if (!nhanVienData || !nhanVienData.hoTenNV || !nhanVienData.sdt || !nhanVienData.matKhau) {
+        return res.status(400).json({ error: "Thông tin đăng ký không đầy đủ" });
       }
 
-      const nhanVien = new NhanVien(
-        nhanVienData.hoTenNV,
-        nhanVienData.sdt,
-        nhanVienData.matKhau
-      );
+      const nhanVien = new NhanVien(nhanVienData.hoTenNV, nhanVienData.sdt, nhanVienData.matKhau);
       const result = await NhanVienService.dangky(nhanVien);
 
       if (result.success) {
@@ -40,16 +29,10 @@ class NhanVienController {
       const nhanVienData = req.body;
 
       if (!nhanVienData || !nhanVienData.sdt || !nhanVienData.matKhau) {
-        return res
-          .status(400)
-          .json({ error: "Thông tin đăng nhập không đầy đủ" });
+        return res.status(400).json({ error: "Thông tin đăng nhập không đầy đủ" });
       }
 
-      const nhanVien = new NhanVien(
-        null,
-        nhanVienData.sdt,
-        nhanVienData.matKhau
-      );
+      const nhanVien = new NhanVien(null, nhanVienData.sdt, nhanVienData.matKhau);
       const result = await NhanVienService.dangnhap(nhanVien);
 
       if (result.success) {
