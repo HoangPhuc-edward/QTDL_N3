@@ -1,4 +1,4 @@
-const GheController = require("../controllers/ghe.controller");
+const GheController = require("../controllers/ssghe.controller");
 
 const express = require("express");
 const router = express.Router();

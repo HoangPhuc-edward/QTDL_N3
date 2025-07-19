@@ -1,5 +1,5 @@
 const express = require("express");
-const PhimController = require("../controllers/phim.controller");
+const PhimController = require("../controllers/wsphim.controller");
 const router = express.Router();
 
 router.get("/search", PhimController.search);

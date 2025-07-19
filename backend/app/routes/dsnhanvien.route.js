@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const NhanVienController = require("../controllers/nhanvien.controller");
+const NhanVienController = require("../controllers/snhanvien.controller");
 
 router.post("/dangky", NhanVienController.dangKy);
 router.post("/dangnhap", NhanVienController.dangNhap);
