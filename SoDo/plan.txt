@@ -197,8 +197,15 @@ chưa có mã vé cho hóa đơn
 bỏ
 *Trang đặt vé ( phim -> suất chiếu -> ghế -> combo | khách hàng có nhập thông tin không)
 
+- Tách riêng hóa đơn với vé:
+    + Sửa SQL chỗ HOA_DON, trigger không cần tính thêm tiền vé nữa
 
+- Có chỉnh sửa ở SQL ghế và phòng:
+    + Ghế tính trống theo MaSC
 
+Mấy cái cần thêm:
+- Thêm ô khách hàng ở đặt ghế (/ghe) và combo (/combo)
+- Check SDT -> Tồn tại thì lấy, không tồn tại thì thêm
 
 
 

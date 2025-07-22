@@ -11,9 +11,13 @@ class PhongController {
   }
 
   static async taoGheTuDong(req, res) {
-    const { maPhong, soCotToiDa } = req.body;
+    const { maPhong, soCotToiDa, soHangToiDa } = req.body;
     try {
-      const result = await PhongService.taoGheTuDong(maPhong, soCotToiDa);
+      const result = await PhongService.taoGheTuDong(
+        maPhong,
+        soCotToiDa,
+        soHangToiDa
+      );
       res.json(result);
     } catch (err) {
       res.status(500).json({ error: err.message });

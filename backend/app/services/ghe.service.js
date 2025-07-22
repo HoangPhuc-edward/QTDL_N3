@@ -4,7 +4,19 @@ const { Ghe } = require("../models/ghe.model");
 class GheService {
   static async getAllGheByMaPhong(maPhong) {
     const query = `
-            SELECT * FROM GHE WHERE MaPhong = ${maPhong};
+            SELECT * FROM GHE WHERE MaPhong = ${maPhong} and TrangThai = 1;
+        `;
+
+    const [result] = await pool.query(query);
+    return result;
+  }
+
+  static async getAllGheByMaSC(maSC) {
+    const query = `
+            SELECT ghe.*
+            FROM GHE ghe
+            JOIN SUAT_CHIEU sc ON ghe.MaPhong = sc.MaPhong
+            WHERE sc.MaSC = ${maSC} AND ghe.TrangThai = 1;
         `;
 
     const [result] = await pool.query(query);
@@ -19,9 +31,17 @@ class GheService {
     return result;
   }
 
-  static async layGheTrong(maPhong) {
+  static async kiemTraGheTrong(maGhe, maSC) {
     const query = `
-            CALL sp_ghe_trong(${maPhong}); 
+            SELECT fn_ghe_co_trong('${maGhe}', ${maSC}) AS isAvailable;
+        `;
+    const [result] = await pool.query(query);
+    return result[0].isAvailable === 1;
+  }
+
+  static async layGheTrong(maSC) {
+    const query = `
+            CALL sp_ghe_trong(${maSC}); 
         `;
     const [result] = await pool.query(query);
     return result;
@@ -32,8 +52,7 @@ class GheService {
    */
   static async createGhe(ghe) {
     const query = `
-            INSERT INTO GHE (MaGhePhong, MaGhe, MaPhong, SoHang, SoGhe, LoaiGhe, TrangThai)
-            VALUES ('${ghe.maGhePhong}', '${ghe.maGhe}', ${ghe.maPhong}, ${ghe.soHang}, ${ghe.soGhe}, '${ghe.loaiGhe}', ${ghe.trangThai});
+          CALL sp_them_hoac_khoi_phuc_ghe(${ghe.maPhong}, ${ghe.soHang}, ${ghe.soGhe}, '${ghe.loaiGhe}');
         `;
     const result = await pool.query(query);
     return result;
