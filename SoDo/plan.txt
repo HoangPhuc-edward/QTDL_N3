@@ -180,8 +180,12 @@ chưa có mã vé cho hóa đơn
 *Trang chủ  / dashboard là trang đặt vé rồi còn tổng 9 trang
 *Trang suất chiếu 2 ( nằm cùng phim )
 *Trang hóa đơn | xuất hóa đơn
-*Trang hiển thị danh sách phim - thêm / sửa / xóa / chi tiết
+
+
 *Tang hiển thị vé
+
+
+*Trang hiển thị danh sách phim - thêm / sửa / xóa / chi tiết
 
 
 

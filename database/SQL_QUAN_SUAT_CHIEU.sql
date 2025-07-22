@@ -28,9 +28,43 @@ DELIMITER ;
 
 
 
+-- DROP PROCEDURE IF EXISTS TimSuatChieuSau15Phut;
+-- DELIMITER $$
 
+-- CREATE PROCEDURE TimSuatChieuSau15Phut(
+--   IN ngay DATE,
+--   IN gio TIME
+-- )
+-- BEGIN
+--   DECLARE gioCheck TIME;
+--   SET gioCheck = ADDTIME(gio, '00:15:00');
 
+--   SELECT 
+--     SC.MaSC,
+--     SC.NgayChieu,
+--     SC.GioChieu,
+--     PHIM.MaPhim,
+--     PHIM.TenPhim,
+--     PHIM.ThoiLuong,
+--     PHONG.TenPhong,
+--     SC.GiaNguoiLon,
+--     SC.GiaTreEm
+--   FROM SUAT_CHIEU SC
+--   JOIN PHIM ON PHIM.MaPhim = SC.MaPhim
+--   JOIN PHONG_CHIEU PHONG ON PHONG.MaPhong = SC.MaPhong
+--   WHERE SC.NgayChieu = ngay
+--     AND (
+--       (ngay = CURDATE() AND SC.GioChieu >= gioCheck)
+--       OR ngay > CURDATE()
+--     )
+--     AND SC.TrangThai = 1
+--     AND PHIM.TrangThai = 1
+--   ORDER BY SC.GioChieu;
 
+-- END$$
+
+-- DELIMITER ;
+DROP PROCEDURE IF EXISTS TimSuatChieuSau15Phut;
 DELIMITER $$
 
 CREATE PROCEDURE TimSuatChieuSau15Phut(
@@ -42,28 +76,31 @@ BEGIN
   SET gioCheck = ADDTIME(gio, '00:15:00');
 
   SELECT 
-    SC.MaSC,
-    SC.NgayChieu,
-    SC.GioChieu,
-    PHIM.TenPhim,
-    PHONG.TenPhong,
-    SC.GiaNguoiLon,
-    SC.GiaTreEm
+    SC.*,                       
+    PHIM.*,                     
+    PHONG.*,                      
+    (PHONG.SoGhe - IFNULL(SLDaDat.SoVeDaDat, 0)) AS SoGheConLai -- Tính số ghế còn lại
   FROM SUAT_CHIEU SC
   JOIN PHIM ON PHIM.MaPhim = SC.MaPhim
   JOIN PHONG_CHIEU PHONG ON PHONG.MaPhong = SC.MaPhong
+  LEFT JOIN (
+    SELECT MaSC, COUNT(*) AS SoVeDaDat
+    FROM VE
+    WHERE TrangThai = 'Đã thanh toán'
+    GROUP BY MaSC
+  ) AS SLDaDat ON SLDaDat.MaSC = SC.MaSC
   WHERE SC.NgayChieu = ngay
-    AND SC.GioChieu >= gioCheck
+    AND (
+      (ngay = CURDATE() AND SC.GioChieu >= gioCheck)
+      OR ngay > CURDATE()
+    )
     AND SC.TrangThai = 1
     AND PHIM.TrangThai = 1
   ORDER BY SC.GioChieu;
 
 END$$
 
-
-
-
-
+DELIMITER ;
 
 
 DELIMITER $$
@@ -76,23 +113,19 @@ BEGIN
     SC.GioChieu,
     PHONG.TenPhong,
     PHONG.SoGhe,
-    
-    -- Tính tổng số vé đã được đặt (trừ vé huỷ)
     (PHONG.SoGhe - COUNT(VE.MaVe)) AS SoGheConLai
-
   FROM SUAT_CHIEU SC
   JOIN PHONG_CHIEU PHONG ON SC.MaPhong = PHONG.MaPhong
   LEFT JOIN VE ON VE.MaSC = SC.MaSC AND VE.TrangThai != 'Đã hủy'
   WHERE SC.MaPhim = maPhimInput
     AND SC.TrangThai = 1
-
   GROUP BY SC.MaSC, SC.NgayChieu, SC.GioChieu, PHONG.TenPhong, PHONG.SoGhe
   HAVING SoGheConLai > 0
   ORDER BY SC.NgayChieu, SC.GioChieu;
-
-END$$
+END $$
 
 DELIMITER ;
+
 
 
 DELIMITER $$
@@ -109,7 +142,7 @@ BEGIN
   FROM SUAT_CHIEU SC
   JOIN PHONG_CHIEU PHONG ON SC.MaPhong = PHONG.MaPhong
   WHERE SC.MaPhim = targetMaPhim AND SC.TrangThai = 1
-  ORDER BY SC.NgayChieu, SC.GioChieu;
+  ORDER BY SC.NgayChieu, SC.GioChieu
 END $$
 
 DELIMITER ;

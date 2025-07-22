@@ -24,13 +24,13 @@ export default function RootLayout({ children }) {
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <div
           className="flex  bg-gradient-to-br
- from-[#16281d] to-[#665e7e] text-white font-sans pr-4 min-h-screen"
+ from-[#16281d] to-[#665e7e] text-white font-sans pr-4 "
         >
           <aside className="min-w-44 p-4 pr-0  py-4 flex flex-col  text-sm "></aside>
           <div className="fixed">
             <Navbar />
           </div>
-          {children}
+          <div className="flex-1 min-h-screen p-4">{children}</div>
         </div>
       </body>
     </html>

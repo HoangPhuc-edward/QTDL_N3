@@ -1,4 +1,4 @@
-const PhimService = require("../services/Phim.service");
+const PhimService = require("../services/phim.service");
 const moment = require("moment");
 
 class PhimController {
@@ -32,10 +32,20 @@ class PhimController {
       res.status(500).send("Lỗi server khi lấy phim đang chiếu");
     }
   }
+  static async getById(req, res) {
+    const id = req.params.id;
 
+    try {
+      const data = await PhimService.getById(id);
+      res.json(data);
+    } catch (err) {
+      console.error("Lỗi khi lấy phim đang khởi chiếu:", err);
+      res.status(500).send("Lỗi server khi lấy phim đang chiếu");
+    }
+  }
   static async create(req, res) {
     try {
-      const { SuatChieu, ...phimData } = req.body;
+      const { SuatChieu, phimData } = req.body;
       const result = await PhimService.create(phimData, SuatChieu);
       res.status(201).json({ message: "Thêm phim và suất chiếu thành công", MaPhim: result.MaPhim });
     } catch (err) {
@@ -46,7 +56,7 @@ class PhimController {
 
   static async update(req, res) {
     try {
-      const { SuatChieu, ...phimData } = req.body;
+      const { SuatChieu, phimData } = req.body;
       await PhimService.update(phimData, SuatChieu);
       res.json({ message: "Cập nhật phim và suất chiếu thành công" });
     } catch (err) {

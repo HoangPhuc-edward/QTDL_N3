@@ -4,8 +4,48 @@ class Service {
   // 1. Lấy tất cả vé
   static async getAllVe() {
     try {
-      const [rows] = await pool.query("SELECT * FROM ve");
-      console.log(rows, "fdss");
+      const [rows] = await pool.query(`
+      SELECT 
+        VE.MaVe,
+        VE.NgayDat,
+        VE.GiaVe,
+        VE.TrangThai AS TrangThaiVe,
+
+        -- Khách hàng
+        KH.TenKH,
+        KH.SDT,
+        KH.Email,
+
+        -- Suất chiếu
+        SC.NgayChieu,
+        SC.GioChieu,
+        SC.GiaNguoiLon,
+        SC.GiaTreEm,
+
+        -- Phim
+        PH.TenPhim,
+        PH.TheLoai,
+        PH.ThoiLuong,
+
+        -- Phòng
+        PC.TenPhong,
+        PC.LoaiPhong,
+
+        -- Ghế
+        G.MaGhe,
+        G.LoaiGhe,
+        G.SoHang,
+        G.SoGhe
+
+      FROM VE
+      JOIN KHACH_HANG KH ON VE.MaKH = KH.MaKH
+      JOIN SUAT_CHIEU SC ON VE.MaSC = SC.MaSC
+      JOIN PHIM PH ON SC.MaPhim = PH.MaPhim
+      JOIN PHONG_CHIEU PC ON SC.MaPhong = PC.MaPhong
+      JOIN GHE G ON VE.MaGhePhong = G.MaGhePhong
+
+      ORDER BY VE.MaVe
+    `);
       return rows;
     } catch (err) {
       throw err;

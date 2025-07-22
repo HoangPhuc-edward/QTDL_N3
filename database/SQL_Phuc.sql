@@ -11,6 +11,7 @@ CREATE TABLE PHIM (
     TheLoai VARCHAR(255),
     DaoDien VARCHAR(255),
     ThoiLuong INT,
+    img VARCHAR(255),
     NgayKhoiChieu DATE,
     NgayKetThuc DATE,
     DoTuoi INT,

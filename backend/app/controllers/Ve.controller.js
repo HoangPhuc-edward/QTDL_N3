@@ -18,7 +18,6 @@ class VeController {
       console;
       const { MaSC, MaGhePhong, GiaVe, TenKH, SDT, Email } = req.body;
       const newVe = await VeService.createVe({ MaSC, MaGhePhong, GiaVe, TenKH, SDT, Email });
-      console.log(newVe);
       res.status(201).json(newVe);
     } catch (err) {
       console.error(err);
