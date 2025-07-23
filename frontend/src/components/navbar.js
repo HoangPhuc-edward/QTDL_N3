@@ -8,11 +8,13 @@ function Navbar() {
   return (
     <aside className="min-w-44 max-w-44 p-4 pr-0  py-4 flex flex-col  text-sm  ">
       {[
-        { label: "Trang chủ", icon: <Ticket size={16} />, LinkTo: "/" },
+        { label: "Trang chủ", icon: <LayoutPanelLeft size={16} />, LinkTo: "/" },
         { label: "Phim", icon: <Store size={16} />, LinkTo: "/phim" },
-        { label: "Hóa đơn", icon: <Users size={16} width={16} height={16} />, LinkTo: "/hoa-don" },
-        { label: "Phòng", icon: <Users size={16} />, LinkTo: "/phong" },
-        { label: "Vé", icon: <LayoutPanelLeft size={16} />, LinkTo: "/ve" },
+        { label: "Hóa đơn", icon: <Ticket size={16} width={16} height={16} />, LinkTo: "/hoa-don" },
+        { label: "Phòng", icon: <LayoutPanelLeft size={16} />, LinkTo: "/phong" },
+        { label: "Combo", icon: <Store size={16} />, LinkTo: "/combo" },
+        { label: "Vé", icon: <Ticket size={16} />, LinkTo: "/ve" },
+        { label: "Ghế", icon: <Store size={16} />, LinkTo: "/ghe_1" },
       ].map(({ label, icon, LinkTo }, index) => (
         <Link
           href={LinkTo}

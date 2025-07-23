@@ -17,8 +17,8 @@ export default function ImageUpload({ value = [], isLoading, onChange, onRemove,
   );
 
   return (
-    <div>
-      <div className="flex gap-6 flex-wrap">
+    <div className="">
+      <div className="flex gap-6 flex-wrap  ">
         {value.map((item) => (
           <div key={item} className="relative w-[200px] h-[200px] object-cover overflow-hidden">
             <Image

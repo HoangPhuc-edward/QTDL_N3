@@ -25,7 +25,7 @@ BEGIN
     RETURN da_chiem = 0;
 END$$
 DELIMITER ;
-
+-- đã đặt đã sử dụng đã hủy
 SELECT fn_ghe_co_trong('P1A2', 1);
 
 -- Procedure: Lấy danh sách ghế trống, ứng dụng hàm đã nêu

@@ -15,7 +15,6 @@ class VeController {
   // 2. Thêm vé
   static async createVe(req, res) {
     try {
-      console;
       const { MaSC, MaGhePhong, GiaVe, TenKH, SDT, Email } = req.body;
       const newVe = await VeService.createVe({ MaSC, MaGhePhong, GiaVe, TenKH, SDT, Email });
       res.status(201).json(newVe);

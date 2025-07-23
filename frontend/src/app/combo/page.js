@@ -24,21 +24,10 @@ const baseComboData = [
 ];
 
 export default function Combo() {
-  const maVe = 1;
-
-  const [maKH, setMaKH] = useState(1);
+  const [maKH, setMaKH] = useState(null); // Initialize as null since it may be assigned by the API
   const [khachHang, setKhachHang] = useState({
-    tenKhachHang: "Nguyễn Văn A",
-    soDienThoai: "0123456789",
-  });
-
-  // Thông tin vé (const)
-  const [ve, setVe] = useState({
-    phim: "Spider-Man: No Way Home",
-    suatChieu: "19:30 - 21/07/2025",
-    phong: "Phòng 1",
-    ghe: "A5",
-    giaVe: 80000,
+    tenKhachHang: "",
+    soDienThoai: "",
   });
 
   // State cho combo được chọn
@@ -55,18 +44,22 @@ export default function Combo() {
     setSoLuongCombo(quantity);
   };
 
+  const handleKhachHangChange = (field, value) => {
+    setKhachHang((prev) => ({
+      ...prev,
+      [field]: value,
+    }));
+  };
+
   const formatCurrency = (amount) => {
     return amount.toLocaleString("vi-VN") + " VNĐ";
   };
 
   const taoHoaDon = async () => {
-    const selectedCombo = comboData.find(
-      (combo) => combo.MaCombo == selectedComboId
-    );
-
     const hoaDonData = {
-      MaKH: 1,
-      MaNV: 1,
+      MaKH: maKH || null, // Use null if maKH is not set
+      TenKhachHang: khachHang.tenKhachHang,
+      SoDienThoai: khachHang.soDienThoai,
       MaCombo: selectedComboId,
       SoLuongCombo: soLuongCombo,
     };
@@ -82,6 +75,10 @@ export default function Combo() {
 
       if (response.ok) {
         alert("Tạo hóa đơn thành công!");
+        // Reset customer inputs after successful invoice creation
+        setKhachHang({ tenKhachHang: "", soDienThoai: "" });
+        setSelectedComboId("");
+        setSoLuongCombo(1);
       } else {
         alert("Có lỗi xảy ra khi tạo hóa đơn!");
       }
@@ -101,42 +98,7 @@ export default function Combo() {
       setComboData(data);
     } catch (error) {
       console.error("Error fetching combo data:", error);
-      return [];
-    }
-  };
-
-  const fetchVeData = async () => {
-    try {
-      const response = await fetch(`/api/ve/${maVe}`);
-      if (!response.ok) {
-        throw new Error("Failed to fetch ticket data");
-      }
-      const data = await response.json();
-      setVe({
-        phim: data.phim,
-        suatChieu: data.suatChieu,
-        phong: data.phong,
-        ghe: data.ghe,
-        giaVe: data.giaVe,
-      });
-    } catch (error) {
-      console.error("Error fetching ticket data:", error);
-    }
-  };
-
-  const fetchKhachHangData = async () => {
-    try {
-      const response = await fetch(`/api/khach-hang/${maKH}`);
-      if (!response.ok) {
-        throw new Error("Failed to fetch customer data");
-      }
-      const data = await response.json();
-      setKhachHang({
-        tenKhachHang: data.tenKhachHang,
-        soDienThoai: data.soDienThoai,
-      });
-    } catch (error) {
-      console.error("Error fetching customer data:", error);
+      setComboData(baseComboData); // Fallback to baseComboData on error
     }
   };
 
@@ -147,8 +109,9 @@ export default function Combo() {
   return (
     <div
       style={{
-        minHeight: "100vh",
+        height: "100%",
         width: "100%",
+        borderRadius: "10px",
         padding: "20px",
         fontFamily: "Arial, sans-serif",
         backgroundColor: "#f5f5f5",
@@ -160,20 +123,18 @@ export default function Combo() {
           marginBottom: "30px",
           fontSize: "32px",
           fontWeight: "bold",
-          color: "#000",
+          color: "#0f172a",
         }}
       >
         CHỌN COMBO
       </h3>
 
-      <div
-        style={{ display: "flex", gap: "20px", height: "calc(100vh - 120px)" }}
-      >
+      <div style={{ display: "flex", gap: "20px", height: "calc(100vh - 200px)" }}>
         {/* Cột trái - 60% - Danh sách combo */}
         <div
           style={{
             flex: "3",
-            border: "2px solid #000",
+            border: "2px solid #0f172a",
             padding: "20px",
             backgroundColor: "#fff",
             overflow: "auto",
@@ -185,8 +146,8 @@ export default function Combo() {
                 fontSize: "24px",
                 fontWeight: "bold",
                 marginBottom: "20px",
-                color: "#000",
-                borderBottom: "2px solid #000",
+                color: "#0f172a",
+                borderBottom: "2px solid #0f172a",
                 paddingBottom: "10px",
               }}
             >
@@ -197,48 +158,48 @@ export default function Combo() {
                 <tr style={{ backgroundColor: "#f0f0f0" }}>
                   <th
                     style={{
-                      border: "1px solid #000",
+                      border: "1px solid #0f172a",
                       padding: "10px",
                       fontSize: "16px",
                       fontWeight: "bold",
                       textAlign: "left",
-                      color: "#000",
+                      color: "#0f172a",
                     }}
                   >
                     Mã
                   </th>
                   <th
                     style={{
-                      border: "1px solid #000",
+                      border: "1px solid #0f172a",
                       padding: "10px",
                       fontSize: "16px",
                       fontWeight: "bold",
                       textAlign: "left",
-                      color: "#000",
+                      color: "#0f172a",
                     }}
                   >
                     Tên Combo
                   </th>
                   <th
                     style={{
-                      border: "1px solid #000",
+                      border: "1px solid #0f172a",
                       padding: "10px",
                       fontSize: "16px",
                       fontWeight: "bold",
                       textAlign: "left",
-                      color: "#000",
+                      color: "#0f172a",
                     }}
                   >
                     Mô Tả
                   </th>
                   <th
                     style={{
-                      border: "1px solid #000",
+                      border: "1px solid #0f172a",
                       padding: "10px",
                       fontSize: "16px",
                       fontWeight: "bold",
                       textAlign: "right",
-                      color: "#000",
+                      color: "#0f172a",
                     }}
                   >
                     Giá
@@ -250,44 +211,44 @@ export default function Combo() {
                   <tr key={combo.MaCombo} style={{ backgroundColor: "#fff" }}>
                     <td
                       style={{
-                        border: "1px solid #000",
+                        border: "1px solid #0f172a",
                         padding: "10px",
                         fontSize: "14px",
                         fontWeight: "bold",
-                        color: "#000",
+                        color: "#0f172a",
                       }}
                     >
                       {combo.MaCombo}
                     </td>
                     <td
                       style={{
-                        border: "1px solid #000",
+                        border: "1px solid #0f172a",
                         padding: "10px",
                         fontSize: "16px",
                         fontWeight: "bold",
-                        color: "#000",
+                        color: "#0f172a",
                       }}
                     >
                       {combo.TenCombo}
                     </td>
                     <td
                       style={{
-                        border: "1px solid #000",
+                        border: "1px solid #0f172a",
                         padding: "10px",
                         fontSize: "14px",
-                        color: "#000",
+                        color: "#0f172a",
                       }}
                     >
                       {combo.MoTa}
                     </td>
                     <td
                       style={{
-                        border: "1px solid #000",
+                        border: "1px solid #0f172a",
                         padding: "10px",
                         fontSize: "16px",
                         fontWeight: "bold",
                         textAlign: "right",
-                        color: "#000",
+                        color: "#0f172a",
                       }}
                     >
                       {formatCurrency(combo.GiaCombo)}
@@ -296,7 +257,70 @@ export default function Combo() {
                 ))}
               </tbody>
             </table>
-            <div>Nhập thông tin khách</div>
+            <div style={{ marginTop: "20px" }}>
+              <h3
+                style={{
+                  fontSize: "18px",
+                  fontWeight: "bold",
+                  marginBottom: "10px",
+                  color: "#0f172a",
+                }}
+              >
+                NHẬP THÔNG TIN KHÁCH HÀNG
+              </h3>
+              <div style={{ marginBottom: "15px" }}>
+                <label
+                  style={{
+                    display: "block",
+                    marginBottom: "5px",
+                    fontWeight: "bold",
+                    color: "#0f172a",
+                  }}
+                >
+                  Tên khách hàng:
+                </label>
+                <input
+                  type="text"
+                  value={khachHang.tenKhachHang}
+                  onChange={(e) => handleKhachHangChange("tenKhachHang", e.target.value)}
+                  placeholder="Nhập tên khách hàng"
+                  style={{
+                    width: "100%",
+                    padding: "8px",
+                    border: "2px solid #0f172a",
+                    fontSize: "16px",
+                    backgroundColor: "#fff",
+                    color: "#0f172a",
+                  }}
+                />
+              </div>
+              <div style={{ marginBottom: "15px" }}>
+                <label
+                  style={{
+                    display: "block",
+                    marginBottom: "5px",
+                    fontWeight: "bold",
+                    color: "#0f172a",
+                  }}
+                >
+                  Số điện thoại:
+                </label>
+                <input
+                  type="tel"
+                  value={khachHang.soDienThoai}
+                  onChange={(e) => handleKhachHangChange("soDienThoai", e.target.value)}
+                  placeholder="Nhập số điện thoại"
+                  style={{
+                    width: "100%",
+                    padding: "8px",
+                    border: "2px solid #0f172a",
+                    fontSize: "16px",
+                    backgroundColor: "#fff",
+                    color: "#0f172a",
+                  }}
+                />
+              </div>
+            </div>
           </div>
         </div>
 
@@ -304,7 +328,7 @@ export default function Combo() {
         <div
           style={{
             flex: "2",
-            border: "2px solid #000",
+            border: "2px solid #0f172a",
             padding: "20px",
             backgroundColor: "#fff",
             overflow: "auto",
@@ -316,8 +340,8 @@ export default function Combo() {
               fontSize: "24px",
               fontWeight: "bold",
               marginBottom: "20px",
-              color: "#000",
-              borderBottom: "2px solid #000",
+              color: "#0f172a",
+              borderBottom: "2px solid #0f172a",
               paddingBottom: "10px",
             }}
           >
@@ -331,16 +355,16 @@ export default function Combo() {
                 fontSize: "18px",
                 fontWeight: "bold",
                 marginBottom: "10px",
-                color: "#000",
+                color: "#0f172a",
               }}
             >
               THÔNG TIN KHÁCH HÀNG
             </h3>
-            <p style={{ margin: "5px 0", color: "#000" }}>
-              <strong>Tên:</strong> {khachHang.tenKhachHang}
+            <p style={{ margin: "5px 0", color: "#0f172a" }}>
+              <strong>Tên:</strong> {khachHang.tenKhachHang || "Chưa nhập"}
             </p>
-            <p style={{ margin: "5px 0", color: "#000" }}>
-              <strong>SDT:</strong> {khachHang.soDienThoai}
+            <p style={{ margin: "5px 0", color: "#0f172a" }}>
+              <strong>SDT:</strong> {khachHang.soDienThoai || "Chưa nhập"}
             </p>
           </div>
 
@@ -351,7 +375,7 @@ export default function Combo() {
                 fontSize: "18px",
                 fontWeight: "bold",
                 marginBottom: "15px",
-                color: "#000",
+                color: "#0f172a",
               }}
             >
               CHỌN COMBO
@@ -363,7 +387,7 @@ export default function Combo() {
                   display: "block",
                   marginBottom: "5px",
                   fontWeight: "bold",
-                  color: "#000",
+                  color: "#0f172a",
                 }}
               >
                 Tên combo:
@@ -374,10 +398,10 @@ export default function Combo() {
                 style={{
                   width: "100%",
                   padding: "8px",
-                  border: "2px solid #000",
+                  border: "2px solid #0f172a",
                   fontSize: "16px",
                   backgroundColor: "#fff",
-                  color: "#000",
+                  color: "#0f172a",
                 }}
               >
                 <option value="">-- Chọn combo --</option>
@@ -395,7 +419,7 @@ export default function Combo() {
                   display: "block",
                   marginBottom: "5px",
                   fontWeight: "bold",
-                  color: "#000",
+                  color: "#0f172a",
                 }}
               >
                 Số lượng:
@@ -409,23 +433,23 @@ export default function Combo() {
                 style={{
                   width: "100%",
                   padding: "8px",
-                  border: "2px solid #000",
+                  border: "2px solid #0f172a",
                   fontSize: "16px",
                   backgroundColor: "#fff",
-                  color: "#000",
+                  color: "#0f172a",
                 }}
               />
             </div>
           </div>
 
           {/* Tính tiền và tạo hóa đơn */}
-          <div style={{ borderTop: "2px solid #000", paddingTop: "20px" }}>
+          <div style={{ borderTop: "2px solid #0f172a", paddingTop: "20px" }}>
             <button
               onClick={taoHoaDon}
               style={{
                 width: "100%",
                 padding: "12px",
-                backgroundColor: "#000",
+                backgroundColor: "#0f172a",
                 color: "#fff",
                 border: "none",
                 cursor: "pointer",

@@ -102,7 +102,6 @@ export default function GheManager() {
     }
   };
   const addGhe = async () => {
-    console.log("Adding new Ghe:", newGhe);
     try {
       const response = await fetch("http://localhost:5000/api/ghe", {
         method: "POST",
@@ -126,23 +125,20 @@ export default function GheManager() {
   };
   const updateGhe = async () => {
     try {
-      const response = await fetch(
-        `http://localhost:5000/api/ghe/${selectedGhe.MaGhePhong}`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            maPhong: selectedGhe.MaPhong,
-            maGhe: selectedGhe.MaGhe,
-            soHang: selectedGhe.SoHang,
-            soGhe: selectedGhe.SoGhe,
-            loaiGhe: selectedGhe.LoaiGhe,
-            trangThai: selectedGhe.TrangThai,
-          }),
-        }
-      );
+      const response = await fetch(`http://localhost:5000/api/ghe/${selectedGhe.MaGhePhong}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          maPhong: selectedGhe.MaPhong,
+          maGhe: selectedGhe.MaGhe,
+          soHang: selectedGhe.SoHang,
+          soGhe: selectedGhe.SoGhe,
+          loaiGhe: selectedGhe.LoaiGhe,
+          trangThai: selectedGhe.TrangThai,
+        }),
+      });
 
       if (response.ok) {
         alert("Cập nhật ghế thành công!");
@@ -164,12 +160,9 @@ export default function GheManager() {
     }
 
     try {
-      const response = await fetch(
-        `http://localhost:5000/api/ghe/${selectedGhe.MaGhePhong}`,
-        {
-          method: "DELETE",
-        }
-      );
+      const response = await fetch(`http://localhost:5000/api/ghe/${selectedGhe.MaGhePhong}`, {
+        method: "DELETE",
+      });
 
       if (response.ok) {
         alert("Xóa ghế thành công!");
@@ -194,7 +187,7 @@ export default function GheManager() {
   }, [maPhong]);
 
   return (
-    <div className="min-h-screen bg-gray-50 p-6 text-black">
+    <div className="h-full rounded-lg bg-gray-50 p-6 text-black">
       <h1 className="text-2xl font-bold mb-4">Quản lý ghế</h1>
       <div className="grid grid-cols-5 gap-4">
         {/* Cột 1 - 60% */}
@@ -238,9 +231,7 @@ export default function GheManager() {
                 <tr
                   key={ghe.MaGhePhong}
                   className={`cursor-pointer ${
-                    selectedGhe?.MaGhePhong === ghe.MaGhePhong
-                      ? "bg-blue-200"
-                      : "hover:bg-gray-100"
+                    selectedGhe?.MaGhePhong === ghe.MaGhePhong ? "bg-blue-200" : "hover:bg-gray-100"
                   }`}
                   onClick={() => handleSelectGhe(ghe)}
                 >
@@ -258,9 +249,7 @@ export default function GheManager() {
 
         <div className="col-span-2 space-y-6">
           <div className="border border-gray-300 rounded-lg p-4 bg-white shadow-sm">
-            <div className="font-semibold mb-3 text-green-700 border-b border-green-200 pb-2">
-              Bảng thêm ghế mới
-            </div>
+            <div className="font-semibold mb-3 text-green-700 border-b border-green-200 pb-2">Bảng thêm ghế mới</div>
             <div className="space-y-2">
               <input
                 type="text"
@@ -312,9 +301,7 @@ export default function GheManager() {
           </div>
 
           <div className="border border-gray-300 rounded-lg p-4 bg-white shadow-sm">
-            <div className="font-semibold mb-3 text-blue-700 border-b border-blue-200 pb-2">
-              Bảng sửa / xóa ghế
-            </div>
+            <div className="font-semibold mb-3 text-blue-700 border-b border-blue-200 pb-2">Bảng sửa / xóa ghế</div>
             {selectedGhe ? (
               <div className="space-y-2">
                 <input

@@ -57,7 +57,7 @@ class Service {
     try {
       const currentDate = new Date().toISOString().slice(0, 10);
 
-      // Kiểm tra thời gian còn đủ để đặt vé hay không
+      // 1. Kiểm tra suất chiếu còn thời gian đặt vé
       const [[suatChieu]] = await pool.query(`SELECT NgayChieu, GioChieu FROM SUAT_CHIEU WHERE MaSC = ?`, [MaSC]);
 
       if (!suatChieu) {
@@ -72,55 +72,66 @@ class Service {
         throw new Error("Chỉ được đặt vé trước giờ chiếu ít nhất 15 phút.");
       }
 
-      // Nếu không đủ thông tin → tạo ngẫu nhiên
-      const isRandom = !TenKH || !SDT || !Email;
-      let khachHang = {
-        TenKH,
-        SDT,
-        Email,
-      };
+      // 2. Xử lý khách hàng
+      let khachHang = { TenKH, SDT, Email };
+      let newMaKH;
 
-      if (isRandom) {
+      if (!SDT) {
+        // Nếu không cung cấp SDT → tạo KH ngẫu nhiên
         const randomNumber = getRandomInt(1000, 9999);
         khachHang = {
           TenKH: TenKH || `KhachHang_${randomNumber}`,
-          SDT: SDT || `09${getRandomInt(10000000, 99999999)}`,
+          SDT: `09${getRandomInt(10000000, 99999999)}`,
           Email: Email || `kh_${randomNumber}@mail.com`,
         };
-        console.log(" Tạo khách hàng ngẫu nhiên:", khachHang);
+        console.log("Tạo khách hàng ngẫu nhiên:", khachHang);
       } else {
-        console.log(" Dùng thông tin khách hàng từ client:", khachHang);
+        // Nếu có SDT → kiểm tra tồn tại
+        const [[khachCu]] = await pool.query(`SELECT * FROM KHACH_HANG WHERE SDT = ?`, [SDT]);
+        if (khachCu) {
+          // Đã có khách hàng
+          newMaKH = khachCu.MaKH;
+          khachHang = {
+            TenKH: khachCu.TenKH,
+            SDT: khachCu.SDT,
+            Email: khachCu.Email,
+          };
+          console.log("Dùng thông tin khách hàng cũ:", khachHang);
+        } else {
+          // Chưa có → thêm mới
+          const [khachHangResult] = await pool.query(`INSERT INTO KHACH_HANG (TenKH, SDT, Email) VALUES (?, ?, ?)`, [
+            TenKH,
+            SDT,
+            Email,
+          ]);
+          newMaKH = khachHangResult.insertId;
+          console.log("Đã thêm khách hàng mới:", khachHang);
+        }
       }
 
-      // Thêm khách hàng
-      const [khachHangResult] = await pool.query(`INSERT INTO KHACH_HANG (TenKH, SDT, Email) VALUES (?, ?, ?)`, [
-        khachHang.TenKH,
-        khachHang.SDT,
-        khachHang.Email,
-      ]);
-      const newMaKH = khachHangResult.insertId;
+      // Nếu vẫn chưa có MaKH (do tạo KH ngẫu nhiên)
+      if (!newMaKH) {
+        const [khachHangResult] = await pool.query(`INSERT INTO KHACH_HANG (TenKH, SDT, Email) VALUES (?, ?, ?)`, [
+          khachHang.TenKH,
+          khachHang.SDT,
+          khachHang.Email,
+        ]);
+        newMaKH = khachHangResult.insertId;
+      }
 
-      // Kiểm tra ghế và phòng
+      // 3. Kiểm tra ghế
       const [[gheResult]] = await pool.query(`SELECT MaPhong FROM GHE WHERE MaGhePhong = ?`, [MaGhePhong]);
-      if (!gheResult) {
-        throw new Error(`Không tìm thấy ghế với mã ${MaGhePhong}`);
-      }
+      if (!gheResult) throw new Error(`Không tìm thấy ghế với mã ${MaGhePhong}`);
 
       const maPhong = gheResult.MaPhong;
-
       const [[phongResult]] = await pool.query(`SELECT TrangThai FROM PHONG_CHIEU WHERE MaPhong = ?`, [maPhong]);
-      if (!phongResult) {
-        throw new Error(`Không tìm thấy phòng chiếu với mã ${maPhong}`);
-      }
+      if (!phongResult) throw new Error(`Không tìm thấy phòng chiếu với mã ${maPhong}`);
+      if (phongResult.TrangThai === 0) throw new Error(`Phòng ${maPhong} hiện không hoạt động, không thể đặt vé.`);
 
-      if (phongResult.TrangThai === 0) {
-        throw new Error(`Phòng ${maPhong} hiện không hoạt động, không thể đặt vé.`);
-      }
-
-      // Thêm vé
+      // 4. Tạo vé
       const [veResult] = await pool.query(
         `INSERT INTO VE (MaSC, MaKH, MaGhePhong, NgayDat, GiaVe)
-         VALUES (?, ?, ?, ?, ?)`,
+       VALUES (?, ?, ?, ?, ?)`,
         [MaSC, newMaKH, MaGhePhong, currentDate, GiaVe]
       );
 
@@ -135,7 +146,7 @@ class Service {
         KhachHang: khachHang,
       };
     } catch (err) {
-      console.error(" Lỗi khi tạo vé:", err);
+      console.error("Lỗi khi tạo vé:", err);
       throw err;
     }
   }

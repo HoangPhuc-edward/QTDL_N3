@@ -18,11 +18,7 @@ function CardPhim({ item, ngay, seens }) {
   return (
     <Link href={`/suat-chieu-2?id=${item.MaPhim}&ngay=${ngay}`}>
       <Card className=" p-4 bg-[rgba(255,255,255,0.05)]  py-5 h-[250px] flex gap-3 border-none">
-        <img
-          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ3NyUc9Xil9i2BqMmmj88DdJ8oBNuGrzEVJQ&s"
-          alt="Movie poster"
-          className="rounded-md mb-2 object-cover max-w-[280px] h-full "
-        />
+        <img src={item.img} alt="Movie poster" className="rounded-md  mb-2 object-cover w-[220px] h-full " />
         <div className="text-white flex flex-col justify-between w-full">
           <div className="text-sm p-2 px-4 w-fit rounded-full border border-white text-center font-medium">
             {item.DoTuoi}+

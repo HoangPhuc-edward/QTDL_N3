@@ -4,14 +4,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-  CardFooter,
-} from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 
 export default function Login() {
   const [sdt, setSdt] = useState("");
@@ -19,7 +12,6 @@ export default function Login() {
   const [isLoading, setIsLoading] = useState(false);
 
   const handleLogin = async () => {
-    console.log("Thông tin gửi đi:", { sdt, matKhau });
     if (!sdt.trim() || !matKhau.trim()) {
       alert("Vui lòng nhập đầy đủ thông tin!");
       return;
@@ -28,30 +20,23 @@ export default function Login() {
     setIsLoading(true);
 
     try {
-      const response = await fetch(
-        "http://localhost:5000/api/nhanvien/dangnhap",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            sdt: sdt.trim(),
-            matKhau: matKhau.trim(),
-          }),
-        }
-      );
+      const response = await fetch("http://localhost:5000/api/nhanvien/dangnhap", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          sdt: sdt.trim(),
+          matKhau: matKhau.trim(),
+        }),
+      });
 
       if (response.ok) {
         alert("Đăng nhập thành công!");
         window.location.href = "/";
       } else {
         const errorData = await response.json();
-        alert(
-          `Đăng nhập thất bại: ${
-            errorData.message || "Vui lòng kiểm tra lại thông tin"
-          }`
-        );
+        alert(`Đăng nhập thất bại: ${errorData.message || "Vui lòng kiểm tra lại thông tin"}`);
       }
     } catch (error) {
       alert("Có lỗi xảy ra. Vui lòng thử lại!");
@@ -65,12 +50,8 @@ export default function Login() {
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 p-4">
       <Card className="w-full max-w-md shadow-lg">
         <CardHeader className="space-y-1">
-          <CardTitle className="text-2xl font-bold text-center">
-            Đăng nhập
-          </CardTitle>
-          <CardDescription className="text-center">
-            Nhập thông tin để truy cập hệ thống
-          </CardDescription>
+          <CardTitle className="text-2xl font-bold text-center">Đăng nhập</CardTitle>
+          <CardDescription className="text-center">Nhập thông tin để truy cập hệ thống</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="space-y-2">

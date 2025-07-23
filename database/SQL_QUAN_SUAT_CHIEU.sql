@@ -27,43 +27,6 @@ DELIMITER ;
 
 
 
-
--- DROP PROCEDURE IF EXISTS TimSuatChieuSau15Phut;
--- DELIMITER $$
-
--- CREATE PROCEDURE TimSuatChieuSau15Phut(
---   IN ngay DATE,
---   IN gio TIME
--- )
--- BEGIN
---   DECLARE gioCheck TIME;
---   SET gioCheck = ADDTIME(gio, '00:15:00');
-
---   SELECT 
---     SC.MaSC,
---     SC.NgayChieu,
---     SC.GioChieu,
---     PHIM.MaPhim,
---     PHIM.TenPhim,
---     PHIM.ThoiLuong,
---     PHONG.TenPhong,
---     SC.GiaNguoiLon,
---     SC.GiaTreEm
---   FROM SUAT_CHIEU SC
---   JOIN PHIM ON PHIM.MaPhim = SC.MaPhim
---   JOIN PHONG_CHIEU PHONG ON PHONG.MaPhong = SC.MaPhong
---   WHERE SC.NgayChieu = ngay
---     AND (
---       (ngay = CURDATE() AND SC.GioChieu >= gioCheck)
---       OR ngay > CURDATE()
---     )
---     AND SC.TrangThai = 1
---     AND PHIM.TrangThai = 1
---   ORDER BY SC.GioChieu;
-
--- END$$
-
--- DELIMITER ;
 DROP PROCEDURE IF EXISTS TimSuatChieuSau15Phut;
 DELIMITER $$
 
@@ -142,7 +105,7 @@ BEGIN
   FROM SUAT_CHIEU SC
   JOIN PHONG_CHIEU PHONG ON SC.MaPhong = PHONG.MaPhong
   WHERE SC.MaPhim = targetMaPhim AND SC.TrangThai = 1
-  ORDER BY SC.NgayChieu, SC.GioChieu
+  ORDER BY SC.NgayChieu, SC.GioChieu;
 END $$
 
 DELIMITER ;

@@ -12,8 +12,8 @@ class HoaDonController {
 
   static async create(req, res) {
     try {
-      const { MaKH, MaNV, MaCombo, SoLuongCombo } = req.body;
-      const hoaDon = await HoaDonService.create({ MaKH, MaNV, MaCombo, SoLuongCombo });
+      const { MaKH, TenKhachHang, SoDienThoai, MaCombo, SoLuongCombo } = req.body;
+      const hoaDon = await HoaDonService.create({ MaKH, TenKhachHang, SoDienThoai, MaCombo, SoLuongCombo });
       res.status(201).json(hoaDon);
     } catch (err) {
       console.error(err);

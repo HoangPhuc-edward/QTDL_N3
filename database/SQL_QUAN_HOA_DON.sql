@@ -1,67 +1,45 @@
--- DELIMITER //
-
--- CREATE TRIGGER tinh_tong_tien_hoa_don
--- BEFORE INSERT ON HOA_DON
--- FOR EACH ROW
--- BEGIN
---   DECLARE gia DECIMAL(10, 2);
-
---   SELECT GiaCombo INTO gia
---   FROM BAP_NUOC
---   WHERE MaCombo = NEW.MaCombo;
-
---   SET NEW.TongTien = NEW.TongTien + gia * NEW.SoLuongCombo;
--- END;
--- //
-
--- DELIMITER //
-
+-- Trigger khi INSERT hóa đơn: tính tổng tiền từ combo
 DROP TRIGGER IF EXISTS tinh_tong_tien_hoa_don;
-
 DELIMITER //
 
 CREATE TRIGGER tinh_tong_tien_hoa_don
 BEFORE INSERT ON HOA_DON
 FOR EACH ROW
 BEGIN
-  DECLARE gia_combo DECIMAL(10, 2) DEFAULT 0;
-  DECLARE tong_gia_ve DECIMAL(10, 2) DEFAULT 0;
+  DECLARE gia DECIMAL(10, 2) DEFAULT 0;
 
-  -- Lấy giá combo
+  -- Lấy giá combo nếu có
   IF NEW.MaCombo IS NOT NULL THEN
-    SELECT GiaCombo INTO gia_combo
+    SELECT GiaCombo INTO gia
     FROM BAP_NUOC
     WHERE MaCombo = NEW.MaCombo;
   END IF;
 
-  -- Tính tổng giá vé của khách hàng này chưa có hóa đơn
-  SELECT COALESCE(SUM(GiaVe), 0) INTO tong_gia_ve
-  FROM VE
-  WHERE MaKH = NEW.MaKH
-    AND MaVe NOT IN (SELECT MaVe FROM HOA_DON HD
-                     JOIN VE V ON HD.MaKH = V.MaKH);
-
-  -- Gán tổng tiền
-  SET NEW.TongTien = gia_combo * NEW.SoLuongCombo + tong_gia_ve;
+  -- Tính tổng tiền (chỉ combo, giả sử tiền vé cộng sau)
+  SET NEW.TongTien = gia * NEW.SoLuongCombo;
 END;
 //
-
 DELIMITER ;
 
-
+-- Trigger khi UPDATE hóa đơn: cập nhật lại tổng tiền từ combo
+DROP TRIGGER IF EXISTS update_tong_tien_hoa_don;
+DELIMITER //
 
 CREATE TRIGGER update_tong_tien_hoa_don
 BEFORE UPDATE ON HOA_DON
 FOR EACH ROW
 BEGIN
-  DECLARE gia DECIMAL(10, 2);
+  DECLARE gia DECIMAL(10, 2) DEFAULT 0;
 
-  SELECT GiaCombo INTO gia
-  FROM BAP_NUOC
-  WHERE MaCombo = NEW.MaCombo;
+  -- Lấy giá combo nếu có
+  IF NEW.MaCombo IS NOT NULL THEN
+    SELECT GiaCombo INTO gia
+    FROM BAP_NUOC
+    WHERE MaCombo = NEW.MaCombo;
+  END IF;
 
-  SET NEW.TongTien = NEW.TongTien + gia * NEW.SoLuongCombo;
+  -- Cập nhật lại tổng tiền
+  SET NEW.TongTien = gia * NEW.SoLuongCombo;
 END;
 //
-
 DELIMITER ;

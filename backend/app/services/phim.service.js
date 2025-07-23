@@ -29,10 +29,9 @@ class PhimService {
 
   static async create(phimData, suatChieuList) {
     const conn = await pool.getConnection();
-
     const [phimResult] = await conn.query(
-      `INSERT INTO PHIM (TenPhim, TheLoai, DaoDien, ThoiLuong, NgayKhoiChieu, NgayKetThuc, DoTuoi)
-       VALUES (?, ?, ?, ?, ?, DATE_ADD(?, INTERVAL 30 DAY), ?)`,
+      `INSERT INTO PHIM (TenPhim, TheLoai, DaoDien, ThoiLuong, NgayKhoiChieu, NgayKetThuc, DoTuoi,img)
+       VALUES (?, ?, ?, ?, ?, DATE_ADD(?, INTERVAL 30 DAY), ?, ?)`,
       [
         phimData.TenPhim,
         phimData.TheLoai,
@@ -41,6 +40,7 @@ class PhimService {
         phimData.NgayKhoiChieu,
         phimData.NgayKhoiChieu,
         phimData.DoTuoi,
+        phimData.img,
       ]
     );
 
@@ -64,7 +64,7 @@ class PhimService {
       // Update the PHIM table
       await conn.query(
         `UPDATE PHIM SET TenPhim = ?, TheLoai = ?, DaoDien = ?, ThoiLuong = ?, NgayKhoiChieu = ?, 
-       NgayKetThuc = DATE_ADD(?, INTERVAL 30 DAY), DoTuoi = ?
+       NgayKetThuc = DATE_ADD(?, INTERVAL 30 DAY), DoTuoi = ?, img = ?
        WHERE MaPhim = ?`,
         [
           phimData.TenPhim,
@@ -74,6 +74,7 @@ class PhimService {
           phimData.NgayKhoiChieu,
           phimData.NgayKhoiChieu,
           phimData.DoTuoi,
+          phimData.img,
           phimData.MaPhim,
         ]
       );
@@ -115,7 +116,6 @@ class PhimService {
         }
       }
 
-      console.log("Updated suatChieuList:", suatChieuList);
       return { success: true };
     } catch (err) {
       throw err;

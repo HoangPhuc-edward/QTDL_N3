@@ -8,8 +8,21 @@
   }
 }
 
+/* styles/global.css */
+.dialog-content {
+  z-index: 50 !important; /* Lower than iframe’s z-index: 1000000 */
+}
 
+.dialog-overlay {
+  z-index: 49 !important; /* Lower than DialogContent and iframe */
+}
 
+/* Ensure the iframe is fully interactive */
+iframe[src*="upload-widget.cloudinary.com"] {
+  z-index: 1000000 !important;
+  pointer-events: auto !important;
+  visibility: visible !important;
+}
 @layer base {
   :root {
     --background: 0 0% 100%;
@@ -65,8 +78,6 @@
     --chart-5: 340 75% 55%;
   }
 }
-
-
 
 @layer base {
   * {

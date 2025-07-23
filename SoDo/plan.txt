@@ -198,7 +198,7 @@ bỏ
 *Trang đặt vé ( phim -> suất chiếu -> ghế -> combo | khách hàng có nhập thông tin không)
 
 - Tách riêng hóa đơn với vé:
-    + Sửa SQL chỗ HOA_DON, trigger không cần tính thêm tiền vé nữa
+    + Sửa SQL chỗ HOA_DON, trigger không cần tính thêm tiền vé nữa , v vé là 1 hóa đơn lun hả à ko có thể có vé hoặc ko có vé
 
 - Có chỉnh sửa ở SQL ghế và phòng:
     + Ghế tính trống theo MaSC

@@ -1,7 +1,7 @@
 import localFont from "next/font/local";
 import "./globals.css";
 import Navbar from "@/components/navbar";
-
+import { Toaster } from "@/components/ui/sonner";
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
   variable: "--font-geist-sans",
@@ -30,8 +30,9 @@ export default function RootLayout({ children }) {
           <div className="fixed">
             <Navbar />
           </div>
-          <div className="flex-1 min-h-screen p-4">{children}</div>
+          <div className="flex-1 min-h-screen p-4flex flex-col md:flex-row gap-6 p-4 pr-0 w-full">{children}</div>
         </div>
+        <Toaster />
       </body>
     </html>
   );

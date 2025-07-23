@@ -68,15 +68,12 @@ export default function Phong() {
 
   async function deletePhong() {
     try {
-      const response = await fetch(
-        `http://localhost:5000/api/phong/${selected.MaPhong}`,
-        {
-          method: "DELETE",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      const response = await fetch(`http://localhost:5000/api/phong/${selected.MaPhong}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
 
       if (response.ok) {
         alert("Xóa phòng thành công!");
@@ -93,21 +90,18 @@ export default function Phong() {
 
   async function updatePhong() {
     try {
-      const response = await fetch(
-        `http://localhost:5000/api/phong/${selected.MaPhong}`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            tenPhong: selected.TenPhong,
-            soGhe: selected.SoGhe,
-            loaiPhong: selected.LoaiPhong,
-            trangThai: selected.TrangThai,
-          }),
-        }
-      );
+      const response = await fetch(`http://localhost:5000/api/phong/${selected.MaPhong}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          tenPhong: selected.TenPhong,
+          soGhe: selected.SoGhe,
+          loaiPhong: selected.LoaiPhong,
+          trangThai: selected.TrangThai,
+        }),
+      });
 
       if (response.ok) {
         alert("Cập nhật phòng thành công!");
@@ -154,9 +148,7 @@ export default function Phong() {
     fetchPhong();
   }, []);
 
-  const filteredList = phongList.filter((p) =>
-    p.TenPhong?.toLowerCase().includes(search.toLowerCase())
-  );
+  const filteredList = phongList.filter((p) => p.TenPhong?.toLowerCase().includes(search.toLowerCase()));
 
   const handleAdd = () => {
     addPhong();
@@ -181,7 +173,7 @@ export default function Phong() {
   };
 
   return (
-    <div className="flex flex-col md:flex-row gap-6 p-4 pr-0 w-full bg-gray-50">
+    <div className="flex flex-col rounded-lg h-full md:flex-row gap-6 p-4 pr-0 w-full bg-gray-50">
       {/* Left Column */}
 
       <div className="w-[60%] space-y-4">
@@ -210,11 +202,7 @@ export default function Phong() {
               </thead>
               <tbody>
                 {filteredList.map((p) => (
-                  <tr
-                    key={p.MaPhong}
-                    className="cursor-pointer hover:bg-blue-100"
-                    onClick={() => setSelected(p)}
-                  >
+                  <tr key={p.MaPhong} className="cursor-pointer hover:bg-blue-100" onClick={() => setSelected(p)}>
                     <td className="border p-2">{p.MaPhong}</td>
                     <td className="border p-2">{p.TenPhong}</td>
                     <td className="border p-2">{p.SoGhe}</td>
@@ -270,31 +258,21 @@ export default function Phong() {
               placeholder="Mã phòng"
               type="number"
               value={autoForm.maPhong}
-              onChange={(e) =>
-                setAutoForm({ ...autoForm, maPhong: e.target.value })
-              }
+              onChange={(e) => setAutoForm({ ...autoForm, maPhong: e.target.value })}
             />
             <Input
               placeholder="Số cột ghế tối đa"
               type="number"
               value={autoForm.soCotToiDa}
-              onChange={(e) =>
-                setAutoForm({ ...autoForm, soCotToiDa: e.target.value })
-              }
+              onChange={(e) => setAutoForm({ ...autoForm, soCotToiDa: e.target.value })}
             />
             <Input
               placeholder="Số hàng ghế tối đa"
               type="number"
               value={autoForm.soHangToiDa}
-              onChange={(e) =>
-                setAutoForm({ ...autoForm, soHangToiDa: e.target.value })
-              }
+              onChange={(e) => setAutoForm({ ...autoForm, soHangToiDa: e.target.value })}
             />
-            <Button
-              className="w-full"
-              variant="outline"
-              onClick={handleAutoCreate}
-            >
+            <Button className="w-full" variant="outline" onClick={handleAutoCreate}>
               Tạo ghế tự động
             </Button>
           </CardContent>
@@ -309,23 +287,17 @@ export default function Phong() {
               <Input value={selected.MaPhong} disabled />
               <Input
                 value={selected.TenPhong}
-                onChange={(e) =>
-                  setSelected({ ...selected, TenPhong: e.target.value })
-                }
+                onChange={(e) => setSelected({ ...selected, TenPhong: e.target.value })}
               />
               <Input
                 type="number"
                 value={selected.SoGhe}
-                onChange={(e) =>
-                  setSelected({ ...selected, SoGhe: parseInt(e.target.value) })
-                }
+                onChange={(e) => setSelected({ ...selected, SoGhe: parseInt(e.target.value) })}
               />
               <select
                 className="w-full border rounded p-2"
                 value={selected.LoaiPhong}
-                onChange={(e) =>
-                  setSelected({ ...selected, LoaiPhong: e.target.value })
-                }
+                onChange={(e) => setSelected({ ...selected, LoaiPhong: e.target.value })}
               >
                 <option value="2D">2D</option>
                 <option value="3D">3D</option>
@@ -335,11 +307,7 @@ export default function Phong() {
                 <Button className="flex-1" onClick={handleUpdate}>
                   Cập nhật
                 </Button>
-                <Button
-                  variant="destructive"
-                  className="flex-1"
-                  onClick={handleDelete}
-                >
+                <Button variant="destructive" className="flex-1" onClick={handleDelete}>
                   Xóa
                 </Button>
               </div>

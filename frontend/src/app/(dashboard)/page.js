@@ -43,7 +43,20 @@ export default function Home() {
 
       {/* Movies Grid */}
       <div className="grid grid-cols-3 gap-4">
-        {listPhimByDate?.map((item, i) => (
+        {[
+          ...listPhimByDate,
+          ...listPhimByDate,
+          ...listPhimByDate,
+          ...listPhimByDate,
+          ...listPhimByDate,
+          ...listPhimByDate,
+          ...listPhimByDate,
+          ...listPhimByDate,
+          ...listPhimByDate,
+          ...listPhimByDate,
+          ...listPhimByDate,
+          ...listPhimByDate,
+        ]?.map((item, i) => (
           <CardPhim key={i} item={item} seens={seens} ngay={formatDate(selectedDate)} />
         ))}
       </div>
